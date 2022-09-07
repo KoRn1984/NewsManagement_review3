@@ -46,7 +46,9 @@
 				</strong>			
 				</div>							
 				<div class="news-date">
-					<c:out value="${news.date}" />
+				    <fmt:parseDate value="${news.date}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+				    <fmt:formatDate value="${parsedDate}" var="newsDate" type="date" pattern="MM/dd/yyyy" />
+					<c:out value="${newsDate}" />
 				</div>
 				<div class="news-content">
 					<c:out value="${news.brief}" />

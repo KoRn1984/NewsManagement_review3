@@ -32,8 +32,10 @@
 		<tr>
 			<td class="space_around_title_text">${date}:</td>
 			<td class="space_around_view_text">
-			<div class="word-breaker">
-				<c:out value="${requestScope.news.date}" />
+			<div class="word-breaker">			
+			    <fmt:parseDate value="${requestScope.news.date}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+				<fmt:formatDate value="${parsedDate}" var="newsDate" type="date" pattern="MM/dd/yyyy" />
+				<c:out value="${newsDate}" />
 			</div>
 			</td>
 		</tr>

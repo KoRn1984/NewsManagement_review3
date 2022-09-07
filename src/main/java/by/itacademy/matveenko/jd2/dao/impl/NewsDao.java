@@ -146,6 +146,13 @@ public class NewsDao implements INewsDao {
 					}					
 	}
 	
+	private static final String UNPUBLISH_NEWS = "UPDATE news SET deleted = ? WHERE id = ?";
+	@Override
+	public boolean unpublishNewses(String[] idNewses) throws NewsDaoException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	private static final String DELETE_NEWS = "DELETE FROM news WHERE id IN (?)";
 	@Override
 	public boolean deleteNewses(String[] idNewses) throws NewsDaoException {
