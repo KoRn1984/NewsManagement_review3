@@ -10,7 +10,7 @@ public interface INewsService {
 	  News findById(Integer idNews) throws ServiceException;
 	  boolean save(News news) throws ServiceException;
 	  boolean update(News news) throws ServiceException;
-	  boolean unpublishNewsesByIds(String[] idNews) throws ServiceException;
-	  boolean deleteNewsesByIds(String[] idNews) throws ServiceException;
+	  boolean unpublishNewsById(String[] idNews) throws ServiceException;
+	  boolean deleteNewsById(String[] idNews) throws ServiceException;
 	  int countPage(int countNewsPage) throws ServiceException;
 	}

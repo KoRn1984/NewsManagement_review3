@@ -26,7 +26,7 @@ public class DoUnpublishNews implements Command {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String[] idNewses = request.getParameterValues(NewsParameterName.JSP_ID_NEWS);		
+		String[] idNews = request.getParameterValues(NewsParameterName.JSP_ID_NEWS);		
 		
 	    try {
 			HttpSession getSession = request.getSession(false);
@@ -37,7 +37,7 @@ public class DoUnpublishNews implements Command {
 					if (!role.equals(UserRole.ADMIN.getName())) {
 						response.sendRedirect(JspPageName.ERROR_PAGE);
 						} else {
-							if (newsService.deleteNewsesByIds(idNewses)) {
+							if (newsService.deleteNewsById(idNews)) {
 								getSession.setAttribute(AttributsName.USER_STATUS, ConnectorStatus.ACTIVE);
 								getSession.setAttribute(AttributsName.DELETE_NEWS, AttributsName.COMMAND_EXECUTED);
 								response.sendRedirect(PageUrl.NEWS_LIST_PAGE);
