@@ -148,21 +148,21 @@ public class NewsDao implements INewsDao {
 	
 	private static final String UNPUBLISH_NEWS = "UPDATE news SET deleted = ? WHERE id = ?";
 	@Override
-	public boolean unpublishNewses(String[] idNewses) throws NewsDaoException {
+	public boolean unpublishNewses(String[] idNews) throws NewsDaoException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	private static final String DELETE_NEWS = "DELETE FROM news WHERE id IN (?)";
 	@Override
-	public boolean deleteNewses(String[] idNewses) throws NewsDaoException {
+	public boolean deleteNewses(String[] idNews) throws NewsDaoException {
 		int row = 0;		
 		try (Connection connection = ConnectionPool.getInstance().takeConnection()) {
 			try {
 				connection.setAutoCommit(false);
 		        PreparedStatement ps = connection.prepareStatement(DELETE_NEWS);
-		        for (int i = 0; i < idNewses.length; i++) {
-			    ps.setInt(1, Integer.parseInt (idNewses [i]));
+		        for (String id : idNews) {
+			    ps.setInt(1, Integer.parseInt (id));
 			    row = ps.executeUpdate();
 			    if (row == 0) {
 			    	return false;

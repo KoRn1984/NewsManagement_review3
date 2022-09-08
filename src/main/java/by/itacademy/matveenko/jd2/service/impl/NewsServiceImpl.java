@@ -83,9 +83,9 @@ public class NewsServiceImpl implements INewsService{
 	}
 	
 	@Override
-	public boolean unpublishNewsesByIds(String[] idNewses) throws ServiceException {		
+	public boolean unpublishNewsesByIds(String[] idNews) throws ServiceException {		
 		try {
-			if (!(newsDao.unpublishNewses(idNewses))) {							
+			if (!(newsDao.unpublishNewses(idNews))) {							
 				return false;
 			}
 			return true;
@@ -95,9 +95,9 @@ public class NewsServiceImpl implements INewsService{
 	}
 	
 	@Override
-	public boolean deleteNewsesByIds(String[] idNewses) throws ServiceException {		
+	public boolean deleteNewsesByIds(String[] idNews) throws ServiceException {		
 		try {
-			if (!(newsDao.deleteNewses(idNewses))) {							
+			if (!(newsDao.deleteNewses(idNews))) {							
 				return false;
 			}
 			return true;
