@@ -20,19 +20,19 @@ import by.itacademy.matveenko.jd2.util.NewsParameterName;
 public class NewsDao implements INewsDao {
 	private final UserDao userDao = new UserDao();
 	//private final IUserDao userDao = DaoProvider.getInstance().getUserDao();
-	private static final String NEWS_DELETED = "yes";
-	private static final String NEWS_NOT_DELETED = "no";
+	private static final String NEWS_PUBLISHED = "yes";
+	private static final String NEWS_UNPUBLISHED = "no";
 	private static final String DATE_PATTERN = "yyyy-MM-dd";
 	private static final String MESSAGE_EXCEPTION = "News not saved!";
 	
-	private static final String SELECT_NEWS_LATEST_LIST = "SELECT * FROM news WHERE deleted = ? ORDER BY date DESC LIMIT ?";
+	private static final String SELECT_NEWS_LATEST_LIST = "SELECT * FROM news WHERE published = ? ORDER BY date DESC LIMIT ?";
 	@Override
 	public List<News> getLatestList(int pageSize) throws NewsDaoException  {
 		List<News> newsLatestList = new ArrayList<>();
 		int startSize = pageSize;		
 	        try (Connection connection = ConnectionPool.getInstance().takeConnection();
 	        	PreparedStatement ps = connection.prepareStatement(SELECT_NEWS_LATEST_LIST)) {
-	        	ps.setString(1, NEWS_NOT_DELETED);
+	        	ps.setString(1, NEWS_PUBLISHED);
 	        	ps.setInt(2, startSize);
 	            try (ResultSet rs = ps.executeQuery()) {
 	                while (rs.next()) {	                	
@@ -53,14 +53,14 @@ public class NewsDao implements INewsDao {
 	        return newsLatestList;
 	 }				
 
-	private static final String SELECT_NEWS_LIST = "SELECT * FROM news WHERE deleted = ? ORDER BY date DESC LIMIT ?, ?";
+	private static final String SELECT_NEWS_LIST = "SELECT * FROM news WHERE published = ? ORDER BY date DESC LIMIT ?, ?";
 	@Override
 	public List<News> getNewsList(Integer pageNumber, Integer pageSize) throws NewsDaoException {
 		List<News> newsList = new ArrayList<>();
 		int startSize = (pageNumber - 1) * pageSize;			 
 	        try (Connection connection = ConnectionPool.getInstance().takeConnection();
 	        	PreparedStatement ps = connection.prepareStatement(SELECT_NEWS_LIST)) {
-	        	ps.setString(1, NEWS_NOT_DELETED);
+	        	ps.setString(1, NEWS_PUBLISHED);
 	        	ps.setInt(2, startSize);
 	        	ps.setInt(3, pageSize);
 	            try (ResultSet rs = ps.executeQuery()) {
@@ -107,7 +107,7 @@ public class NewsDao implements INewsDao {
 			return news;
 	}
 	
-	private static final String INSERT_NEWS = "INSERT INTO news(title, brief, content, date, reporter, deleted) VALUES (?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_NEWS = "INSERT INTO news(title, brief, content, date, reporter, published) VALUES (?, ?, ?, ?, ?, ?)";
 	@Override
 	public int addNews(News news) throws NewsDaoException {
 		int row = 0;		
@@ -118,7 +118,7 @@ public class NewsDao implements INewsDao {
             ps.setString(3, news.getContent());            
             ps.setString(4, LocalDate.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN)));
             ps.setInt(5, news.getAuthor().getId());
-            ps.setString(6, NEWS_NOT_DELETED);
+            ps.setString(6, NEWS_PUBLISHED);
             row = ps.executeUpdate();
             if (row == 0) {
 				throw new NewsDaoException(MESSAGE_EXCEPTION);
@@ -151,11 +151,31 @@ public class NewsDao implements INewsDao {
 					}					
 	}
 	
-	private static final String UNPUBLISH_NEWS = "UPDATE news SET deleted = ? WHERE id = ?";
+	private static final String UNPUBLISH_NEWS = "UPDATE news SET published = ? WHERE id = ?";
 	@Override
 	public boolean unpublishNews(String[] idNews) throws NewsDaoException {
-		// TODO Auto-generated method stub
-		return false;
+		int row = 0;		
+		try (Connection connection = ConnectionPool.getInstance().takeConnection()) {
+			try {
+				connection.setAutoCommit(false);
+		        PreparedStatement ps = connection.prepareStatement(UNPUBLISH_NEWS);
+		        for (String id : idNews) {
+		        	ps.setString(1, NEWS_UNPUBLISHED);
+		        	ps.setInt(2, Integer.parseInt (id));
+		        	row = ps.executeUpdate();
+		        	if (row == 0) {
+		        		return false;
+			    	}
+			    }
+		        connection.commit();
+		        connection.setAutoCommit(true);
+		        } catch (SQLException e) {
+		        	connection.rollback();		        			        	
+		        	}
+			} catch (SQLException | ConnectionPoolException e) {
+				throw new NewsDaoException(e);
+				}
+		return true;
 	}
 
 	private static final String DELETE_NEWS = "DELETE FROM news WHERE id IN (?)";
@@ -184,12 +204,12 @@ public class NewsDao implements INewsDao {
 		return true;
 	}
 	
-	private static final String SELECT_COUNT_NEWS = "SELECT COUNT(*) FROM news WHERE deleted = ?";
+	private static final String SELECT_COUNT_NEWS = "SELECT COUNT(*) FROM news WHERE published = ?";
 	@Override
 	public int countNews() throws NewsDaoException {
 		try (Connection connection = ConnectionPool.getInstance().takeConnection();
 		    PreparedStatement ps = connection.prepareStatement(SELECT_COUNT_NEWS)) {
-			ps.setString(1, NEWS_NOT_DELETED);
+			ps.setString(1, NEWS_PUBLISHED);
 				try (ResultSet rs = ps.executeQuery()) {
 					if(!rs.next()) {
 	                	return 0;

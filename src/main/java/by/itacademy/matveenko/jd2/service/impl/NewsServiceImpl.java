@@ -85,7 +85,7 @@ public class NewsServiceImpl implements INewsService{
 	@Override
 	public boolean unpublishNewsById(String[] idNews) throws ServiceException {		
 		try {
-			if (!(newsDao.unpublishNews(idNews))) {							
+			if (!(newsDao.unpublishNews(idNews))) {
 				return false;
 			}
 			return true;

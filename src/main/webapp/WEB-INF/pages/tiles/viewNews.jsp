@@ -12,6 +12,7 @@
 <fmt:message bundle="${loc}" key="local.loc.name.content" var="content" />
 <fmt:message bundle="${loc}" key="local.loc.name.edit" var="edit" />
 <fmt:message bundle="${loc}" key="local.loc.name.delete" var="delete" />
+<fmt:message bundle="${loc}" key="local.loc.name.unpublish" var="unpublish" />
 <fmt:message bundle="${loc}" key="local.loc.name.back" var="back" />
 
 <div class="body-title">
@@ -58,25 +59,33 @@
 	</table>
 </div>
 <c:if test="${sessionScope.role eq 'admin'}">
-<div class="first-view-button">
+<div align="right" class="first-view-button">
 	<form action="controller" method="post">
 		<input type="hidden" name="command" value="go_to_edit_news_page" />
-		<input type="hidden" name="id" value="${news.id}" />		
-		<input type="submit" value="${edit}" />
+		<input type="hidden" name="id" value="${news.id}" />
+		<button type="submit" class="btn btn-warning" value="${edit}">${edit}</button>
 	</form>
 </div>
-<div class="second-view-button">
+<br/><br/>
+<div align="right" class="second-view-button">
+	<form action="controller" method="post">
+		<input type="hidden" name="command" value="do_unpublish_news" />
+		<input type="hidden" name="id" value="${news.id}" />
+		<button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>	
+	</form>
+</div>
+<div align="left" class="third-view-button">
 	<form action="controller" method="post">
 		<input type="hidden" name="command" value="do_delete_news" />
 		<input type="hidden" name="id" value="${news.id}" />		
-		<input type="submit" value="${delete}" />
+		<button type="submit" class="btn btn-danger" value="${delete}">${delete}</button>			
 	</form>
 </div>
 </c:if>
 <br /><br />
-<div class="cancel-button">
-		<form action="controller" method="post">
-		     <input type="hidden" name="command" value="go_to_news_list" />		     
-		     <input type="submit" value="${back}" />
-		</form>
+<div align="center" class="cancel-button">
+	<form action="controller" method="post">
+		 <input type="hidden" name="command" value="go_to_news_list" />
+		 <button type="submit" class="btn btn-secondary" value="${back}">${back}</button>		
+	</form>
 </div>

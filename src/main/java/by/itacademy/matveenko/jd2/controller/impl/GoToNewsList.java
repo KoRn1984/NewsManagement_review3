@@ -22,6 +22,9 @@ import jakarta.servlet.http.HttpSession;
 public class GoToNewsList implements Command {	
 	private final INewsService newsService = ServiceProvider.getInstance().getNewsService();
 	private static final Logger log = LogManager.getLogger(GoToNewsList.class);
+	private static final String PAGE_NUMBER = "pageNo";
+	private static final String CURRENT_PAGE = "currentPage";
+	private static final String COUNT_PAGE = "countPage";
 			
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,14 +35,15 @@ public class GoToNewsList implements Command {
 		Integer countPage = 0;
 		
 		try {
-			pageNumber = Integer.parseInt(request.getParameter("pageNo"));
+			pageNumber = Integer.parseInt(request.getParameter(PAGE_NUMBER));
 		} catch (NumberFormatException e) {
 			pageNumber = 1;
 		}		
 		try {
 			newsList = newsService.newsList(pageNumber, pageSize);
 			countPage = newsService.countPage(pageSize);
-			request.setAttribute("countPage", countPage);
+			request.setAttribute(CURRENT_PAGE, pageNumber);
+			request.setAttribute(COUNT_PAGE, countPage);
 			request.setAttribute(AttributsName.NEWS, newsList);
 			request.setAttribute(AttributsName.PRESENTATION, AttributsName.NEWS_LIST);
 			getSession.setAttribute(AttributsName.PAGE_URL, PageUrl.NEWS_LIST_PAGE);

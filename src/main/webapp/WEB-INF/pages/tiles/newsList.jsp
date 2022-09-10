@@ -10,10 +10,12 @@
 <fmt:message bundle="${loc}" key="local.loc.name.edit" var="edit" />
 <fmt:message bundle="${loc}" key="local.loc.name.view" var="view" />
 <fmt:message bundle="${loc}" key="local.loc.name.delete" var="delete" />
+<fmt:message bundle="${loc}" key="local.loc.name.unpublish" var="unpublish" />
 <fmt:message bundle="${loc}" key="local.loc.name.noNews" var="no_news" />
 <fmt:message bundle="${loc}" key="local.loc.name.regMessage" var="reg_message" />
 <fmt:message bundle="${loc}" key="local.loc.name.saveMessage" var="save_message" />
 <fmt:message bundle="${loc}" key="local.loc.name.updateMessage" var="update_message" />
+<fmt:message bundle="${loc}" key="local.loc.name.unpublishMessage" var="unpublish_message" />
 <fmt:message bundle="${loc}" key="local.loc.name.deleteMessage" var="delete_message" />
 
 <div class="body-title">
@@ -23,19 +25,37 @@
     <c:if test="${sessionScope.register_user eq 'not_registered'}">
 		<c:import url="/WEB-INF/pages/tiles/registration.jsp" />
 	</c:if>		     
-	<c:if test="${sessionScope.register_user eq 'registered'}">
-		<center><font color="green">${reg_message}!</font></center>
-	</c:if>				     
+	<c:if test="${sessionScope.register_user eq 'registered'}">	
+	   <div class="alert alert-success" role="alert">
+	     <center>${reg_message}!</center>
+	     <c:remove var="register_user" />
+	   </div>
+	</c:if>
 	<c:if test="${sessionScope.addNews eq 'command_executed'}">
-	    <center><font color="blue">${save_message}!</font></center>
+	   <div class="alert alert-primary" role="alert">
+	     <center>${save_message}!</center>
+	     <c:remove var="addNews" />
+	   </div>
 	</c:if>
 	<c:if test="${sessionScope.editNews eq 'command_executed'}">
-	    <center><font color="orange">${update_message}!</font></center>
-	</c:if>
-	<c:if test="${sessionScope.deleteNews eq 'command_executed'}">
-	    <center><font color="grey">${delete_message}!</font></center>
+	   <div class="alert alert-warning" role="alert">
+	     <center>${update_message}!</center>
+	     <c:remove var="editNews" />
+	   </div>
 	</c:if>	
-<c:if test="${not(requestScope.news eq null)}">	
+    <c:if test="${sessionScope.unpublishNews eq 'command_executed'}">
+	   <div class="alert alert-info" role="alert">
+	     <center>${unpublish_message}!</center>
+	     <c:remove var="unpublishNews" />
+	   </div>
+	</c:if>	    
+	<c:if test="${sessionScope.deleteNews eq 'command_executed'}">
+	   <div class="alert alert-danger" role="alert">
+	     <center>${delete_message}!</center>
+	     <c:remove var="deleteNews" />
+	   </div>
+	</c:if>		
+<c:if test="${not(requestScope.news eq null)}">
 <form action="controller" method="post">
 	<c:forEach var="news" items="${requestScope.news}">
 		<div class="single-news-wrapper">
@@ -57,32 +77,38 @@
 					<div class="link-position">
 						<c:if test="${sessionScope.role eq 'admin'}">
 						      <a href="controller?command=go_to_edit_news_page&id=${news.id}">${edit}</a>
-						</c:if>&nbsp;&nbsp;				
+						</c:if>&nbsp;&nbsp;
 						      <a href="controller?command=go_to_view_news&id=${news.id}">${view}</a>
    					    <c:if test="${sessionScope.role eq 'admin'}">   					    
    					         <input type="checkbox" name="id" value="${news.id}" />
-   					         <input type="hidden" name="command" value="do_delete_news" />
-   					    </c:if>
+   					         <input type="hidden" name="command" value="do_unpublish_news" />
+   					    </c:if>   					    
 					</div>					
 				</div>
 			</div>
 		</div>
 	</c:forEach>
-	<c:if test="${sessionScope.role eq 'admin'}">
+	<c:if test="${not(requestScope.news eq null)}">
+	<c:if test="${sessionScope.role eq 'admin'}">		
 	<logic:notEmpty name="newsForm" property="newsList">
 		<div class="delete-button-position">
 			<html:submit>
-				<bean:message key="locale.newslink.deletebutton" />				
-				<input type="submit" value="${delete}" />
+				<bean:message key="locale.newslink.unpublishbutton" />
+				<button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>				
 			</html:submit>		                
 		</div>
 	</logic:notEmpty>
-	</c:if>
+	</c:if></c:if>
 </form>
+<br/><br/>
 <div class="Page navigation">
       <c:if test="${sessionScope.user_status eq 'active'}">
         <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">       
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <c:if test="${currentPage != 1}">
+                <a class="page-link" href="controller?command=go_to_news_list&pageNo=${currentPage - 1}" tabindex="-1">Previous</a></c:if>
+            </li>      
             <c:forEach var="page" begin="1" end="${requestScope.countPage}">
               <c:if test="${param.pageNo eq page}">                   
                 <li class="page-item active">
@@ -96,7 +122,12 @@
                   <c:out value="${page}" /></a>
                 </li>
               </c:if>
-            </c:forEach>            
+            </c:forEach>
+            <li class="page-item">
+              <c:if test="${currentPage lt countPage}">                
+                <a class="page-link" href="controller?command=go_to_news_list&pageNo=${currentPage + 1}">Next</a>
+              </c:if>
+            </li>               
           </ul>
         </nav>
       </c:if>

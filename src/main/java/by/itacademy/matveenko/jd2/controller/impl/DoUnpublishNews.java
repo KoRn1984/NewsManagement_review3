@@ -37,9 +37,9 @@ public class DoUnpublishNews implements Command {
 					if (!role.equals(UserRole.ADMIN.getName())) {
 						response.sendRedirect(JspPageName.ERROR_PAGE);
 						} else {
-							if (newsService.deleteNewsById(idNews)) {
+							if (newsService.unpublishNewsById(idNews)) {
 								getSession.setAttribute(AttributsName.USER_STATUS, ConnectorStatus.ACTIVE);
-								getSession.setAttribute(AttributsName.DELETE_NEWS, AttributsName.COMMAND_EXECUTED);
+								getSession.setAttribute(AttributsName.UNPUBLISH_NEWS, AttributsName.COMMAND_EXECUTED);
 								response.sendRedirect(PageUrl.NEWS_LIST_PAGE);
 								} else {
 									response.sendRedirect(JspPageName.ERROR_PAGE);
