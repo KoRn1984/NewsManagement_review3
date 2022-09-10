@@ -27,31 +27,31 @@
 	</c:if>		     
 	<c:if test="${sessionScope.register_user eq 'registered'}">	
 	   <div class="alert alert-success" role="alert">
-	     <center>${reg_message}!</center>
+	     <div style="text-align:center;">${reg_message}!</div>
 	     <c:remove var="register_user" />
 	   </div>
 	</c:if>
 	<c:if test="${sessionScope.addNews eq 'command_executed'}">
 	   <div class="alert alert-primary" role="alert">
-	     <center>${save_message}!</center>
+	     <div style="text-align:center;">${save_message}!</div>
 	     <c:remove var="addNews" />
 	   </div>
 	</c:if>
 	<c:if test="${sessionScope.editNews eq 'command_executed'}">
 	   <div class="alert alert-warning" role="alert">
-	     <center>${update_message}!</center>
+	     <div style="text-align:center;">${update_message}!</div>
 	     <c:remove var="editNews" />
 	   </div>
 	</c:if>	
     <c:if test="${sessionScope.unpublishNews eq 'command_executed'}">
 	   <div class="alert alert-info" role="alert">
-	     <center>${unpublish_message}!</center>
+	     <div style="text-align:center;">${unpublish_message}!</div>
 	     <c:remove var="unpublishNews" />
 	   </div>
 	</c:if>	    
 	<c:if test="${sessionScope.deleteNews eq 'command_executed'}">
 	   <div class="alert alert-danger" role="alert">
-	     <center>${delete_message}!</center>
+	     <div style="text-align:center;">${delete_message}!</div>
 	     <c:remove var="deleteNews" />
 	   </div>
 	</c:if>		
@@ -94,7 +94,7 @@
 		<div class="delete-button-position">
 			<html:submit>
 				<bean:message key="locale.newslink.unpublishbutton" />
-				<button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>				
+				<button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>
 			</html:submit>		                
 		</div>
 	</logic:notEmpty>

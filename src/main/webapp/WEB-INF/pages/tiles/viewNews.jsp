@@ -14,6 +14,10 @@
 <fmt:message bundle="${loc}" key="local.loc.name.delete" var="delete" />
 <fmt:message bundle="${loc}" key="local.loc.name.unpublish" var="unpublish" />
 <fmt:message bundle="${loc}" key="local.loc.name.back" var="back" />
+<fmt:message bundle="${loc}" key="local.loc.name.modalTitle" var="modalTitle" />
+<fmt:message bundle="${loc}" key="local.loc.name.modalBody" var="modalBody" />
+<fmt:message bundle="${loc}" key="local.loc.name.modalClose" var="modalClose" />
+<fmt:message bundle="${loc}" key="local.loc.name.modalExecute" var="modalExecute" />
 
 <div class="body-title">
 	<a href="controller?command=go_to_news_list">${newses} >> </a>${news_view}
@@ -71,15 +75,32 @@
 	<form action="controller" method="post">
 		<input type="hidden" name="command" value="do_unpublish_news" />
 		<input type="hidden" name="id" value="${news.id}" />
-		<button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>	
+		<button type="submit" class="btn btn-primary">${unpublish}</button>	
 	</form>
 </div>
 <div align="left" class="third-view-button">
 	<form action="controller" method="post">
 		<input type="hidden" name="command" value="do_delete_news" />
 		<input type="hidden" name="id" value="${news.id}" />		
-		<button type="submit" class="btn btn-danger" value="${delete}">${delete}</button>			
-	</form>
+		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" value="${delete}">${delete}</button>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">        
+        <h2 class="modal-title" id="staticBackdropLabel"><strong>${modalTitle}</strong></h2>        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>      
+      <h5 class="modal-body" style="text-align:center;">${modalBody}</h5>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${modalClose}</button>
+        <button type="submit" class="btn btn-primary" value="${unpublish}">${modalExecute}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+</form>
 </div>
 </c:if>
 <br /><br />

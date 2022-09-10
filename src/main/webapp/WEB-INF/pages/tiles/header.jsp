@@ -35,8 +35,8 @@
 						</font> 
 					</c:if>
 					<input type="hidden" name="command" value="do_registration" />
-					<a href="controller?command=go_to_registration_page">${registration}</a>							
-					<input type="submit" value="${sign_in}" /><br />
+					<a href="controller?command=go_to_registration_page">${registration}</a>
+					<button type="submit" class="badge text-bg-info" value="${sign_in}">${sign_in}</button>					
 				</form>
 			</div>
 		</c:if>			
@@ -44,8 +44,8 @@
 			<div align="right">
 			<font color="blue">${user.userName}</font>&nbsp;&nbsp;<font color="blue">${user.userSurname}</font>
 				<form action="controller" method="post">				    
-					<input type="hidden" name="command" value="do_sign_out" />					
-					<input type="submit" value="${sign_out}" /><br />
+					<input type="hidden" name="command" value="do_sign_out" />
+					<button type="submit" class="badge text-bg-info" value="${sign_out}">${sign_out}</button>
 				</form>
 			</div>
 		</c:if>		

@@ -13,6 +13,6 @@
 <title>Footer</title>
 </head>
 <body>
-<center>${copyright}.</center>
+<div style="text-align:center;">${copyright}.</div>
 </body>
 </html>
