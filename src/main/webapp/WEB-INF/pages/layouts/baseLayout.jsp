@@ -9,12 +9,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>News Management</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="text/javascript" src="scripts/validation.js"></script>
-<title>News Management</title>
+ <style>
+   body {
+  background: #eeeeee url(images/newsBackground.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src= images/newsBackground.jpg', sizingMethod='scale')";
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='. images/newsBackground.jpg', sizingMethod='scale');
+}
+ </style>
 <link rel="stylesheet" type="text/css" href="styles/newsStyle.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<script type="text/javascript" src="scripts/validation.js"></script>
 </head>
 <body>
 	<div class="page">	    

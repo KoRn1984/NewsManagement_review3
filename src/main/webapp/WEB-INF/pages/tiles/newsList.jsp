@@ -17,6 +17,8 @@
 <fmt:message bundle="${loc}" key="local.loc.name.updateMessage" var="update_message" />
 <fmt:message bundle="${loc}" key="local.loc.name.unpublishMessage" var="unpublish_message" />
 <fmt:message bundle="${loc}" key="local.loc.name.deleteMessage" var="delete_message" />
+<fmt:message bundle="${loc}" key="local.loc.name.previous" var="previous" />
+<fmt:message bundle="${loc}" key="local.loc.name.next" var="next" />
 
 <div class="body-title">
 	<a href="controller?command=go_to_news_list">${newses} >> </a>${news_list}
@@ -79,35 +81,35 @@
 						      <a href="controller?command=go_to_edit_news_page&id=${news.id}">${edit}</a>
 						</c:if>&nbsp;&nbsp;
 						      <a href="controller?command=go_to_view_news&id=${news.id}">${view}</a>
-   					    <c:if test="${sessionScope.role eq 'admin'}">   					    
+   					    <c:if test="${sessionScope.role eq 'admin'}">   					      					    
    					         <input type="checkbox" name="id" value="${news.id}" />
-   					         <input type="hidden" name="command" value="do_unpublish_news" />
+   					         <input type="hidden" name="command" value="do_unpublish_news" />   					         
    					    </c:if>   					    
 					</div>					
 				</div>
 			</div>
 		</div>
-	</c:forEach>
-	<c:if test="${not(requestScope.news eq null)}">
-	<c:if test="${sessionScope.role eq 'admin'}">		
-	<logic:notEmpty name="newsForm" property="newsList">
-		<div class="delete-button-position">
-			<html:submit>
-				<bean:message key="locale.newslink.unpublishbutton" />
-				<button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>
-			</html:submit>		                
-		</div>
-	</logic:notEmpty>
-	</c:if></c:if>
-</form>
-<br/><br/>
+	</c:forEach>	
+	<c:if test="${sessionScope.role eq 'admin'}">
+	<c:if test="${not(requestScope.presentation eq null)}">	
+	 <c:if test="${not(sessionScope.news eq 'unpublishNews')}">	 
+	  <c:if test="${not(requestScope.news eq null)}"> 
+	  <div class="delete-button-position">	  		
+		   <button type="submit" class="btn btn-primary" value="${unpublish}">${unpublish}</button>
+		   	     <c:remove var="unpublishNews" />
+	  </div>  
+     </c:if>
+    </c:if>
+   </c:if>
+   </c:if>    
+  <br/><br/>
 <div class="Page navigation">
       <c:if test="${sessionScope.user_status eq 'active'}">
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             <li class="page-item">
               <c:if test="${currentPage != 1}">
-                <a class="page-link" href="controller?command=go_to_news_list&pageNo=${currentPage - 1}" tabindex="-1">Previous</a></c:if>
+                <a class="page-link" href="controller?command=go_to_news_list&pageNo=${currentPage - 1}" tabindex="-1">${previous}</a></c:if>
             </li>      
             <c:forEach var="page" begin="1" end="${requestScope.countPage}">
               <c:if test="${param.pageNo eq page}">                   
@@ -125,14 +127,15 @@
             </c:forEach>
             <li class="page-item">
               <c:if test="${currentPage lt countPage}">                
-                <a class="page-link" href="controller?command=go_to_news_list&pageNo=${currentPage + 1}">Next</a>
+                <a class="page-link" href="controller?command=go_to_news_list&pageNo=${currentPage + 1}">${next}</a>
               </c:if>
             </li>               
           </ul>
         </nav>
       </c:if>
     </div>
-    </c:if>
+  </form>
+</c:if>
 	<c:if test="${sessionScope.showNews eq 'not_show'}">
 	  <div class="no-news">
 		<c:if test="${requestScope.news eq null}">
